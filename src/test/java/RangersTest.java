@@ -47,4 +47,20 @@ public class RangersTest extends TestCase {
         assertTrue(foundRanger.equals(ranger));
 
     }
+
+    @Test
+    public void entryIsUpdatedCorrectly() {
+        Rangers ranger= setUpNewRanger();
+        Rangers otherRanger=ranger;
+        ranger.save();
+        try {
+            ranger.update(ranger.getId(),"Ruth Mwangi","0714735954");
+            Rangers foundRanger=Rangers.find(ranger.getId());
+            assertNotEquals(foundRanger,otherRanger);
+            assertEquals(foundRanger.getId(),otherRanger.getId());
+
+        }catch (IllegalArgumentException e){
+            System.out.println(e);
+        }
+    }
 }
