@@ -58,4 +58,14 @@ public class Rangers {
                     .getKey();
         }
     }
+
+    public static Rangers find(int id){
+        try (Connection con=DB.sql2o.open()){
+            String sql="SELECT * FROM rangers WHERE id=:id";
+            return con.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeAndFetchFirst(Rangers.class);
+        }
+
+    }
 }
