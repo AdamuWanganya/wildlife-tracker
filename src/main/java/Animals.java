@@ -2,6 +2,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2oException;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Animals implements DatabaseManagement {
 
@@ -11,6 +12,7 @@ public class Animals implements DatabaseManagement {
     private String health;
     private String age;
     public static final String ANIMAL_TYPE="normal";
+
 
 
     public Animals(String name,String type) {
@@ -58,6 +60,7 @@ public class Animals implements DatabaseManagement {
 
     }
 
+
     public void update(int id,String type,String health,String age) {
         try (Connection con = DB.sql2o.open()) {
             if (type.equals("")) {
@@ -89,6 +92,12 @@ public class Animals implements DatabaseManagement {
             System.out.println(ex);
         }
     }
+
+
+
+
+
+
 
     public static Animals find(int id){
         try (Connection con=DB.sql2o.open()){
@@ -122,7 +131,6 @@ public class Animals implements DatabaseManagement {
         }
 
     }
-
     public static List<Animals> all(){
         try (Connection con=DB.sql2o.open()) {
             String sql ="SELECT * FROM animals";
@@ -131,5 +139,19 @@ public class Animals implements DatabaseManagement {
                     .executeAndFetch(Animals.class);
 
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Animals animals = (Animals) o;
+        return name.equals(animals.name) &&
+                type.equals(animals.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name,type);
     }
 }
