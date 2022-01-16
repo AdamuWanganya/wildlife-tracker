@@ -25,4 +25,26 @@ public class RangersTest extends TestCase {
         assertTrue(Rangers.all().get(0).equals(ranger));
 
     }
+
+    @Test
+    public void emptyFieldsAreNotSaved() {
+        Rangers ranger=new Rangers("","","0713245678");
+        try{
+            ranger.save();
+            assertTrue(Rangers.all().get(0).equals(ranger));
+        }catch (IllegalArgumentException e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void findById() {
+        Rangers ranger= setUpNewRanger();
+        Rangers otherRanger=new Rangers("Sylvia","2","0726108898");
+        ranger.save();
+        otherRanger.save();
+        Rangers foundRanger=Rangers.find(ranger.getId());
+        assertTrue(foundRanger.equals(ranger));
+
+    }
 }
