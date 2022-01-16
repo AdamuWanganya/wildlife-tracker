@@ -1,18 +1,19 @@
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.Assert.*;
 
 public class SightingsTest {
 
     @Rule
-    public DatabaseRule databaseRule = new DatabaseRule();
+    public DatabaseRule databaseRule=new DatabaseRule();
 
     @Test
     public void createInstanceOfSightingsClass_true() {
 
-        Sightings sighting = setUpNewSighting();
-        assertEquals(true, sighting instanceof Sightings);
+        Sightings sighting= setUpNewSighting();
+        assertEquals(true,sighting instanceof Sightings);
     }
 
     @Test
@@ -27,7 +28,7 @@ public class SightingsTest {
             System.out.println(e);
         }
     }
-
+    //
     @Test
     public void findSightingByID() {
         Sightings sighting=setUpNewSighting();
@@ -44,7 +45,6 @@ public class SightingsTest {
         assertEquals(null,Sightings.find(sighting.getId()));
 
     }
-
     @Test
     public void deleteAll() {
         Sightings sighting=setUpNewSighting();
@@ -62,5 +62,3 @@ public class SightingsTest {
         return new Sightings(1,1,1);
     }
 }
-}
-

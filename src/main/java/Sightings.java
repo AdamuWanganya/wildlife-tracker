@@ -43,4 +43,13 @@ public class Sightings {
     public Timestamp getTime() {
         return time;
     }
+
+    public static List<Sightings> all(){
+        try (Connection con =DB.sql2o.open()){
+            String sql=("SELECT * FROM sightings");
+            return con.createQuery(sql)
+                    .executeAndFetch(Sightings.class);
+
+        }
+    }
 }
