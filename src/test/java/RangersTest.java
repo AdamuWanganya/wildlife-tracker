@@ -17,4 +17,12 @@ public class RangersTest extends TestCase {
         Rangers ranger = setUpNewRanger();
         assertEquals(true, ranger instanceof Rangers);
     }
+
+    @Test
+    public void allEntriesAreSaved() {
+        Rangers ranger= setUpNewRanger();
+        ranger.save();
+        assertTrue(Rangers.all().get(0).equals(ranger));
+
+    }
 }
