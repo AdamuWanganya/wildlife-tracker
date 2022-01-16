@@ -59,5 +59,49 @@ public class App {
             return new ModelAndView(model,"ranger-view.hbs");
         },new HandlebarsTemplateEngine());
 
+        //location
+        get("/create/location",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"location-form.hbs");
+        },new HandlebarsTemplateEngine());
+
+        post("/create/location/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            String name=request.queryParams("name");
+            Locations location=new Locations(name);
+            try {
+                location.save();
+            }catch (IllegalArgumentException e){
+                System.out.println(e);
+            }
+
+            return new ModelAndView(model,"location-form.hbs");
+        },new HandlebarsTemplateEngine());
+        get("/view/locations",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("locations",Locations.all());
+            return new ModelAndView(model,"location-view.hbs");
+        },new HandlebarsTemplateEngine());
+
+        get("/view/location/sightings/:id",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int idOfLocation= Integer.parseInt(request.params(":id"));
+            Locations foundLocation=Locations.find(idOfLocation);
+            List<Sightings> sightings=foundLocation.getLocationSightings();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (Sightings sighting : sightings){
+                String animal_name=Animals.find(sighting.getAnimal_id()).getName();
+                String animal_type=Animals.find(sighting.getAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",sightings);
+            model.put("animals",animals);
+            model.put("types",types);
+            model.put("locations",Locations.all());
+            return new ModelAndView(model,"location-view.hbs");
+        },new HandlebarsTemplateEngine());
+
     }
 }
