@@ -40,4 +40,27 @@ public class EndangeredAnimalsTest {
         assertEquals(null,Animals.find(testAnimal.getId()));
 
     }
+
+    @Test
+    public void ensureNameFieldCannotBeEmpty(){
+        EndangeredAnimals testAnimal=new EndangeredAnimals("","endangered","","");
+        try {
+            testAnimal.save();
+        }catch (IllegalArgumentException e){
+
+        }
+    }
+
+    @Test
+    public void deleteAllEntries(){
+        EndangeredAnimals testAnimal=setUpNewAnimal();
+        EndangeredAnimals otherAnimal=setUpNewAnimal();
+        testAnimal.save();
+        otherAnimal.save();
+        Animals.deleteAll();
+        List<Animals> animals=Animals.all();
+        assertEquals(0,animals.size());
+
+
+    }
 }
