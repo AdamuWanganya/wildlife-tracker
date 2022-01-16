@@ -32,4 +32,15 @@ public class Rangers {
     public String getPhone_number() {
         return phone_number;
     }
+
+    public static List<Rangers> all(){
+        try (Connection con=DB.sql2o.open()){
+            String sql="SELECT * FROM rangers";
+            return con.createQuery(sql)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Rangers.class);
+
+        }
+
+    }
 }
