@@ -16,6 +16,14 @@ public class EndangeredAnimals extends Animals implements DatabaseManagement{
         this.type=type;
         this.health=health;
         this.age=age;
-
     }
+
+    public String getHealth() {
+        return health;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
 }
