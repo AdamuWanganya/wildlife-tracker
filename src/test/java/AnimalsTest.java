@@ -12,4 +12,11 @@ public class AnimalsTest {
         assertEquals(true, testAnimals instanceof Animals);
     }
 
+    @Test
+    public void allInstancesAreSaved() {
+        Animals testAnimal=setUpNewAnimal();
+        testAnimal.save();
+        assertTrue(Animals.all().get(0).equals(testAnimal));
+    }
+
 }
