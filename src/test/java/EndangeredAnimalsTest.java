@@ -31,4 +31,13 @@ public class EndangeredAnimalsTest {
         assertTrue(foundAnimal.getHealth().equals(testAnimal.getHealth()));
 
     }
+
+    @Test
+    public void deleteByID(){
+        EndangeredAnimals testAnimal=setUpNewAnimal();
+        testAnimal.save();
+        testAnimal.delete();
+        assertEquals(null,Animals.find(testAnimal.getId()));
+
+    }
 }
