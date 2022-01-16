@@ -1,4 +1,5 @@
 import org.sql2o.Connection;
+import org.sql2o.Sql2oException;
 
 public class Animals implements DatabaseManagement {
 
@@ -53,6 +54,38 @@ public class Animals implements DatabaseManagement {
                     .getKey();
         }
 
+    }
+
+    public void update(int id,String type,String health,String age) {
+        try (Connection con = DB.sql2o.open()) {
+            if (type.equals("")) {
+                throw new IllegalArgumentException("All fields must be filled");
+            }
+            if (type == "endangered") {
+                if (health.equals("") || age.equals("")) {
+                    throw new IllegalArgumentException("All fields must be filled");
+                }
+                String sql = "UPDATE animals SET type=:type,health=:health,age=:age WHERE id=:id";
+                con.createQuery(sql)
+                        .addParameter("type", type)
+                        .addParameter("health", health)
+                        .addParameter("age", age)
+                        .addParameter("id", this.id)
+                        .executeUpdate();
+            } else {
+
+                String sql = "UPDATE animals SET type=:type,health=:health,age=:age WHERE id=:id";
+                con.createQuery(sql)
+                        .addParameter("type", type)
+                        .addParameter("health", "")
+                        .addParameter("age", "")
+                        .addParameter("id", this.id)
+                        .executeUpdate();
+            }
+
+        }catch (Sql2oException ex){
+            System.out.println(ex);
+        }
     }
 
 }
