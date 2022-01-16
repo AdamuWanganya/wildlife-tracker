@@ -43,4 +43,19 @@ public class Rangers {
         }
 
     }
+
+    public void save(){
+        try (Connection con=DB.sql2o.open()){
+            String sql="INSERT INTO rangers (name,badge_number,phone_number) VALUES (:name,:badge_number,:phone_number)";
+            if(name.equals("")||badge_number.equals("")||phone_number.equals("")){
+                throw new IllegalArgumentException("All fields must be filled");
+            }
+            this.id=(int) con.createQuery(sql,true)
+                    .addParameter("name",this.name)
+                    .addParameter("badge_number",this.badge_number)
+                    .addParameter("phone_number",this.phone_number)
+                    .executeUpdate()
+                    .getKey();
+        }
+    }
 }
