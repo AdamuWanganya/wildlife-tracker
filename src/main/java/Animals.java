@@ -15,4 +15,24 @@ public class Animals implements DatabaseManagement {
         this.age="";
     }
 
+    public String getHealth() {
+        return health;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
 }
