@@ -110,4 +110,14 @@ public class Animals implements DatabaseManagement {
 
         }
     }
+    public static void deleteAll(){
+        try (Connection con=DB.sql2o.open()){
+            String sql = "DELETE FROM animals";
+            con.createQuery(sql)
+                    .executeUpdate();
+        }  catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+
+    }
 }
