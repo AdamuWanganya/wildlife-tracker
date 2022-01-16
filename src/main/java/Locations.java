@@ -20,4 +20,14 @@ public class Locations {
     public String getName() {
         return name;
     }
+
+    public static List<Locations> all(){
+        try (Connection con=DB.sql2o.open()){
+            String sql="SELECT * FROM locations";
+            return con.createQuery(sql)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Locations.class);
+        }
+
+    }
 }
