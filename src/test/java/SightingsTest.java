@@ -1,5 +1,17 @@
-import junit.framework.TestCase;
+import org.junit.Rule;
+import org.junit.jupiter.api.Test;
 
-public class SightingsTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class SightingsTest {
+
+    @Rule
+    public DatabaseRule databaseRule = new DatabaseRule();
+
+    @Test
+    public void createInstanceOfSightingsClass_true() {
+
+        Sightings sighting = setUpNewSighting();
+        assertEquals(true, sighting instanceof Sightings);
+    }
 }
