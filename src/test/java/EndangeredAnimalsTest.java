@@ -61,6 +61,26 @@ public class EndangeredAnimalsTest {
         List<Animals> animals=Animals.all();
         assertEquals(0,animals.size());
 
+    }
+
+    @Test
+    public void ensureEntryIsUpdatedCorrectly(){
+        EndangeredAnimals testAnimal=setUpNewAnimal();
+        EndangeredAnimals otherAnimal=testAnimal;
+        testAnimal.save();
+        try {
+            testAnimal.update(testAnimal.getId(),"endangered","okay","newborn");
+            Animals updatedAnimal=  Animals.find(testAnimal.getId());
+            assertEquals(updatedAnimal.getId(),otherAnimal.getId());
+            assertNotEquals(updatedAnimal.getHealth(),otherAnimal.getHealth());
+        }catch (IllegalArgumentException e){
+
+        }
 
     }
+
+    private EndangeredAnimals setUpNewAnimal() {
+        return new EndangeredAnimals("Albino Giraffe","endangered","healthy","young");
+    }
+
 }
