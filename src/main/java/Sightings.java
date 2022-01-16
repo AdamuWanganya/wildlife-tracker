@@ -72,4 +72,13 @@ public class Sightings {
         }
 
     }
+
+    public static void deleteAll(){
+        try (Connection con=DB.sql2o.open()){
+            String sql="DELETE FROM sightings";
+            con.createQuery(sql)
+                    .executeUpdate();
+        }
+
+    }
 }
