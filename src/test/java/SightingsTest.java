@@ -36,5 +36,13 @@ public class SightingsTest {
         assertTrue(foundSighting.equals(sighting));
 
     }
+    @Test
+    public void deleteSightingByID() {
+        Sightings sighting=setUpNewSighting();
+        sighting.save();
+        sighting.delete();
+        assertEquals(null,Sightings.find(sighting.getId()));
+
+    }
 }
 
