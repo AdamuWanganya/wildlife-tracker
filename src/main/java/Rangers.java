@@ -80,6 +80,7 @@ public class Rangers {
                     .addParameter("name",name)
                     .addParameter("phone_number",phone_number)
                     .executeUpdate();
+
         }
 
     }
@@ -135,5 +136,4 @@ public class Rangers {
     public int hashCode() {
         return Objects.hash(id, name, badge_number, phone_number);
     }
-
 }
