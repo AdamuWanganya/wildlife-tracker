@@ -12,8 +12,9 @@ public class Sightings {
     private int location_id;
     private int ranger_id;
     private int animal_id;
-    private Date date = new Date();
+    private Date date= new Date();
     private Timestamp time;
+
 
 
     public Sightings(int location_id, int ranger_id, int animal_id) {
@@ -72,7 +73,6 @@ public class Sightings {
         }
 
     }
-
     public static void deleteAll(){
         try (Connection con=DB.sql2o.open()){
             String sql="DELETE FROM sightings";
@@ -109,5 +109,22 @@ public class Sightings {
 
         }
 
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sightings sightings = (Sightings) o;
+        return id == sightings.id &&
+                location_id == sightings.location_id &&
+                ranger_id == sightings.ranger_id &&
+                animal_id == sightings.animal_id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, location_id, ranger_id, animal_id);
     }
 }
