@@ -10,9 +10,17 @@ import static spark.Spark.*;
 
 public class App {
 
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
     public static void main(String[] args) {
 
-        staticFileLocation("public");
+        port(getHerokuAssignedPort());
+        staticFileLocation("/public");
 
         get("/",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
@@ -59,6 +67,10 @@ public class App {
             return new ModelAndView(model,"ranger-view.hbs");
         },new HandlebarsTemplateEngine());
 
+
+
+
+
         //location
         get("/create/location",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
@@ -102,6 +114,7 @@ public class App {
             model.put("locations",Locations.all());
             return new ModelAndView(model,"location-view.hbs");
         },new HandlebarsTemplateEngine());
+
 
         //animal
         get("/create/animal",(request, response) -> {
@@ -155,9 +168,13 @@ public class App {
             return new ModelAndView(model,"animal-view.hbs");
         },new HandlebarsTemplateEngine());
 
+
         //sighting
         get("/create/sighting",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
+            model.put("rangers",Rangers.all());
+            model.put("locations",Locations.all());
+            model.put("animals",Animals.all());
             return new ModelAndView(model,"sighting-form.hbs");
         },new HandlebarsTemplateEngine());
 
@@ -166,27 +183,15 @@ public class App {
             int location_id= Integer.parseInt(request.queryParams("location"));
             int ranger_id= Integer.parseInt(request.queryParams("ranger"));
             int animal_id= Integer.parseInt(request.queryParams("animal"));
-            Sightings sighting=new Sightings(location_id,ranger_id,animal_id);
-            try {
-                sighting.save();
-            }catch (IllegalArgumentException e){
-                System.out.println(e);
-            }
 
+            Sightings sighting=new Sightings(location_id,ranger_id,animal_id);
+            sighting.save();
             return new ModelAndView(model,"sighting-form.hbs");
         },new HandlebarsTemplateEngine());
 
         get("/view/sightings",(request, response) -> {
             Map<String,Object> model=new HashMap<String, Object>();
-            model.put("sightings",Sightings.all());
-            return new ModelAndView(model,"sighting-view.hbs");
-        },new HandlebarsTemplateEngine());
-
-        get("/view/sighting/sightings/:id",(request, response) -> {
-            Map<String,Object> model=new HashMap<String, Object>();
-            int idOfLocation= Integer.parseInt(request.params(":id"));
-            Locations foundLocation=Locations.find(idOfLocation);
-            List<Sightings> sightings=foundLocation.getLocationSightings();
+            List<Sightings> sightings=Sightings.all();
             ArrayList<String> animals=new ArrayList<String>();
             ArrayList<String> types=new ArrayList<String>();
             for (Sightings sighting : sightings){
@@ -198,7 +203,6 @@ public class App {
             model.put("sightings",sightings);
             model.put("animals",animals);
             model.put("types",types);
-            model.put("locations",Locations.all());
             return new ModelAndView(model,"sighting-view.hbs");
         },new HandlebarsTemplateEngine());
 
