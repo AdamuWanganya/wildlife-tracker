@@ -44,5 +44,23 @@ public class SightingsTest {
         assertEquals(null,Sightings.find(sighting.getId()));
 
     }
+
+    @Test
+    public void deleteAll() {
+        Sightings sighting=setUpNewSighting();
+        Sightings otherSightings=setUpNewSighting();
+        sighting.save();
+        otherSightings.save();
+        Sightings.deleteAll();
+
+        assertEquals(0,Sightings.all().size());
+
+    }
+
+    //helper
+    private Sightings setUpNewSighting() {
+        return new Sightings(1,1,1);
+    }
+}
 }
 
