@@ -8,12 +8,12 @@ import static org.junit.Assert.*;
 public class EndangeredAnimalsTest {
 
     @Rule
-    public DatabaseRule databaseRule = new DatabaseRule();
+    public DatabaseRule databaseRule=new DatabaseRule();
 
     @Test
-    public void testInstanceOfEndangeredAnimalsClass_true() {
-        EndangeredAnimals testAnimal = setUpNewAnimal();
-        assertEquals(true, testAnimal instanceof EndangeredAnimals);
+    public void testInstanceOfEndangeredAnimalsClass_true(){
+        EndangeredAnimals testAnimal= setUpNewAnimal();
+        assertEquals(true,testAnimal instanceof EndangeredAnimals);
     }
 
     @Test
@@ -31,7 +31,6 @@ public class EndangeredAnimalsTest {
         assertTrue(foundAnimal.getHealth().equals(testAnimal.getHealth()));
 
     }
-
     @Test
     public void deleteByID(){
         EndangeredAnimals testAnimal=setUpNewAnimal();
@@ -40,7 +39,6 @@ public class EndangeredAnimalsTest {
         assertEquals(null,Animals.find(testAnimal.getId()));
 
     }
-
     @Test
     public void ensureNameFieldCannotBeEmpty(){
         EndangeredAnimals testAnimal=new EndangeredAnimals("","endangered","","");
@@ -60,6 +58,7 @@ public class EndangeredAnimalsTest {
         Animals.deleteAll();
         List<Animals> animals=Animals.all();
         assertEquals(0,animals.size());
+
 
     }
 
@@ -82,5 +81,6 @@ public class EndangeredAnimalsTest {
     private EndangeredAnimals setUpNewAnimal() {
         return new EndangeredAnimals("Albino Giraffe","endangered","healthy","young");
     }
+
 
 }
