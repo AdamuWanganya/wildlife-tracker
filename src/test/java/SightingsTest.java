@@ -14,4 +14,18 @@ public class SightingsTest {
         Sightings sighting = setUpNewSighting();
         assertEquals(true, sighting instanceof Sightings);
     }
+
+    @Test
+    public void allInstancesAreSaved() {
+        Sightings sightings=setUpNewSighting();
+        Sightings otherSighting=new Sightings(-1,1,1);
+        try {
+            sightings.save();
+            otherSighting.save();
+            assertTrue(Sightings.find(sightings.getId()).equals(sightings));
+        }catch (IllegalArgumentException e){
+            System.out.println(e);
+        }
+    }
 }
+
