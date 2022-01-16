@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Locations {
 
     private int id;
-    private String name;
+    private  String name;
 
     public Locations(String name) {
         this.name = name;
@@ -43,7 +43,6 @@ public class Locations {
                     .getKey();
         }
     }
-
     public void delete(){
         try (Connection con=DB.sql2o.open()){
             String sql="DELETE FROM locations WHERE id=:id";
@@ -88,5 +87,19 @@ public class Locations {
 
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Locations locations = (Locations) o;
+        return id == locations.id &&
+                name.equals(locations.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
