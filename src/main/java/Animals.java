@@ -1,3 +1,5 @@
+import org.sql2o.Connection;
+
 public class Animals implements DatabaseManagement {
 
     public int id;
@@ -33,6 +35,24 @@ public class Animals implements DatabaseManagement {
 
     public int getId() {
         return id;
+    }
+
+    public void save(){
+        if(this.name.equals("")||this.type.equals("")||this.name.equals(null)||this.type.equals(null)){
+            throw new IllegalArgumentException("Fields cannot be empty");
+        }
+        try (Connection con=DB.sql2o.open()){
+
+
+            String sql ="INSERT INTO animals (name,type) VALUES (:name,:type)";
+
+            this.id=(int) con.createQuery(sql,true)
+                    .addParameter("name",this.name)
+                    .addParameter("type",this.type)
+                    .executeUpdate()
+                    .getKey();
+        }
+
     }
 
 }
