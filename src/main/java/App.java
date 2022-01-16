@@ -155,6 +155,54 @@ public class App {
             return new ModelAndView(model,"animal-view.hbs");
         },new HandlebarsTemplateEngine());
 
+        //sighting
+        get("/create/sighting",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            return new ModelAndView(model,"sighting-form.hbs");
+        },new HandlebarsTemplateEngine());
+
+        post("/create/sighting/new",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int location_id= Integer.parseInt(request.queryParams("location"));
+            int ranger_id= Integer.parseInt(request.queryParams("ranger"));
+            int animal_id= Integer.parseInt(request.queryParams("animal"));
+            Sightings sighting=new Sightings(location_id,ranger_id,animal_id);
+            try {
+                sighting.save();
+            }catch (IllegalArgumentException e){
+                System.out.println(e);
+            }
+
+            return new ModelAndView(model,"sighting-form.hbs");
+        },new HandlebarsTemplateEngine());
+
+        get("/view/sightings",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            model.put("sightings",Sightings.all());
+            return new ModelAndView(model,"sighting-view.hbs");
+        },new HandlebarsTemplateEngine());
+
+        get("/view/sighting/sightings/:id",(request, response) -> {
+            Map<String,Object> model=new HashMap<String, Object>();
+            int idOfLocation= Integer.parseInt(request.params(":id"));
+            Locations foundLocation=Locations.find(idOfLocation);
+            List<Sightings> sightings=foundLocation.getLocationSightings();
+            ArrayList<String> animals=new ArrayList<String>();
+            ArrayList<String> types=new ArrayList<String>();
+            for (Sightings sighting : sightings){
+                String animal_name=Animals.find(sighting.getAnimal_id()).getName();
+                String animal_type=Animals.find(sighting.getAnimal_id()).getType();
+                animals.add(animal_name);
+                types.add(animal_type);
+            }
+            model.put("sightings",sightings);
+            model.put("animals",animals);
+            model.put("types",types);
+            model.put("locations",Locations.all());
+            return new ModelAndView(model,"sighting-view.hbs");
+        },new HandlebarsTemplateEngine());
+
+
 
     }
 }
